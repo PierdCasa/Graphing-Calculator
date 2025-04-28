@@ -1,4 +1,4 @@
-# Calculator-de-functii--Proiect-OOP
+# Calculator-de-functii
 Proiect OOP - Pislariu Mario-Catalin 
 
 Momentan proiectul este INCOMPLET, majoritatea codului este scrisa , insa nu in OOP.(urmeaza sa il implementez respectand Coding-Guideline-ul si sa ating chestiunile de OOP).
