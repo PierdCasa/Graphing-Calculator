@@ -7,7 +7,7 @@
 
 class Rpn
 { 
-  private:
+  protected:
 
     std::string infix_expression;
     std::vector<Token> tokenized_expression;
@@ -29,9 +29,9 @@ class Rpn
     Rpn()=default;
     bool IsOperator(char c);
     bool IsOperand(char c);
-    int Precedence(char op);//functie statica
+    int Precedence(char op);
     void Tokenize(const std::string& infix_expression);
-    void ToPostfix(const std::vector<Token>&tokens);
-
-    void print();
+    void ToPostfix();
+    void print(); //pentru exemplu
+    void print_postfix();//pentru exemplu
 };

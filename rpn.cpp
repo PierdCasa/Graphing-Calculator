@@ -5,7 +5,10 @@
 #include <cctype>
 #include <iostream>
 
-
+//DISCLAIMER:
+//functiile urmataore sunt destul de lungi, insa voi incerca ulterior
+//sa le separ astfel incat sa aiba functionalitati mai mici
+//(dupa ce functioneaza totul:)) )
 
 bool Rpn::IsOperator(char c)
 {
@@ -18,7 +21,7 @@ bool Rpn::IsOperand(char c)
   return isdigit(c) || c=='x';
 }
 // verific daca e nr. sau necunoscuta "x"
-// pentru simplitate n̶u̶ d̶i̶n̶ l̶e̶n̶e̶ am ales o singura necunosuta
+// pentru simplitate n̶u̶ d̶i̶n̶ l̶e̶n̶e̶ am ales o singura necunosuta denumita "x"
 
 int Rpn::Precedence(char op)
 {
@@ -40,8 +43,16 @@ int Rpn::Precedence(char op)
 // }
 
 
-/*functia urmatoare transforma stringul expresiei in token-uri.Notatia la care vrem sa ajungem se mai numeste si RPN(Reverse Polish Notation) sau Notatia Poloneza Postfixata.Practic asa functioneaza toate calculatoarele in spate.  Algoritmul care evalueaza expresiile RPN se numeste Shunting Yard Algorithm(javidx9 l-a implementat si el folosind clase, insa doar pe cifre si fara pow(_)) si in mod traditional este implementat cu o stiva, functioneaza pe principiul ordinii operatiilor pe care l-am redefinit mai sus. Pentru ca ar fi avut mai multe clase decat probabil am eu(si nu am multe) voi folosi implementarile din STL pt. structuri.
-Codul pt. tokenizare cu un for si multe else if-uri, nu ceva foarte special , ci doar memoreaza caracterele in obiecte struct de tip token. (type,value) si NU le schimba(inca) ordinea din expresia infixata*/
+/*functia urmatoare transforma stringul expresiei in token-uri.Notatia la care vrem sa ajungem 
+se mai numeste si RPN(Reverse Polish Notation) sau Notatia Poloneza Postfixata.Practic asa 
+functioneaza toate calculatoarele in spate.  Algoritmul care evalueaza expresiile RPN se numeste
+Shunting Yard Algorithm(javidx9 l-a implementat si el folosind clase, insa doar pe cifre si 
+fara pow(_)) si in mod traditional este implementat cu o stiva, functioneaza pe principiul
+ordinii operatiilor pe care l-am redefinit mai sus. Pentru ca ar fi avut mai multe clase decat 
+probabil am eu(si nu am multe) voi folosi implementarile din STL pt. structuri.
+Codul pt. tokenizare cu un for si multe else if-uri, nu ceva foarte special , ci doar memoreaza 
+caracterele in obiecte struct de tip token. (type,value) si NU le schimba(inca) ordinea din 
+expresia infixata*/
 void Rpn::Tokenize(const std::string& infix_expression)
 { 
   bool expect_operand=true;//intial asteptam operanzi
@@ -92,47 +103,47 @@ void Rpn::Tokenize(const std::string& infix_expression)
     
     if(!curntToken.empty())
     {
-      if(isdigit(curntToken[0]) || curntToken[0]=='-' || curntToken[0]=='x')
+      if(isdigit(curntToken[0]) || curntToken[0]=='-' || infix_expression[i]=='x')
       {
-        int poz=curntToken.find('x');
-        if(poz!=-1 && curntToken.size()>1)
-        {
-          std::string leftPart=curntToken.substr(0,poz);
-          tokens.push_back({OPERAND, leftPart});
-          tokens.push_back({OPERAND,"x"});
-          tokens.push_back({OPERATOR,"*"});
-        }
-        //vedem daca x este in expresie
-        else 
-        {
-          tokens.push_back({OPERAND,curntToken});
-        }
+          int poz=curntToken.find('x');
+          if(poz!=-1 && curntToken.size()>1)
+          {
+            std::string leftPart=curntToken.substr(0,poz);
+            tokens.push_back({OPERAND, leftPart});
+            tokens.push_back({OPERAND,"x"});
+            tokens.push_back({OPERATOR,"*"});
+          }
+          //vedem daca x este in expresie
+          else 
+          {
+            tokens.push_back({OPERAND,curntToken});
+          }
+          expect_operand=false;
+      }
+      else if(IsOperator(curntToken[0]))
+      {
+          tokens.push_back({OPERATOR,curntToken});
+          expect_operand=true;
+      }
+      else if(curntToken=="(")
+      {
+        tokens.push_back({LEFT_PARANTHESIS,"("});
+        expect_operand=true;
+      }
+      else if(curntToken==")")
+      {
+        tokens.push_back({RIGHT_PARANTHESIS,")"});
         expect_operand=false;
       }
-    }
-    else if(IsOperator(curntToken[0]))
-    {
-      tokens.push_back({OPERATOR,curntToken});
-      expect_operand=true;
-    }
-    else if(curntToken=="(")
-    {
-      tokens.push_back({LEFT_PARANTHESIS,"("});
-      expect_operand=true;
-    }
-    else if(curntToken==")")
-    {
-      tokens.push_back({RIGHT_PARANTHESIS,")"});
-      expect_operand=false;
-    }
-    else
-    {
-      std::cout<<"Uknown character "<<curntToken<<"\n";
-      exit(0);
-      //poate fi actualizat sa nu termine programu eventual
-      //oricum se ajunge aici doar daca baga cnv. caractere
-      //chinezesti(sau &)
-      
+      else
+      {
+        std::cout<<"Uknown character "<<curntToken<<std::endl;
+        exit(0);
+        //poate fi actualizat sa nu termine programu eventual
+        //oricum se ajunge aici doar daca baga cnv. caractere
+        //chinezesti(sau &)
+        
+      }
     }
     
   }
@@ -155,7 +166,7 @@ parantezele se trateaza astfel in momentul in care dam de "("
 ii dam push pe stiva, iar cand cand dam de ")" dam pop tuturor operanzilor de pe stiva si le punem in coada.
 pentru ultimul numar acesta va fi pus in coada si el, urmat de ceilalti(sau celalalt daca e doar unul) operanzi.
 */
-void Rpn::ToPostfix(const std::vector<Token>&tokens)
+void Rpn::ToPostfix()
 {
   std::stack<char>operators;
   std::vector<std::string> output;
@@ -198,10 +209,21 @@ void Rpn::ToPostfix(const std::vector<Token>&tokens)
   //actualizam postfix_exp pentru RPN  
 }
 
+
 void Rpn::print()
 {
   for(auto&i:tokens)
       {
-        std::cout<<i.value<<" "<<i.type<<"\n";
+        std::cout<<i.type<<" "<<i.value<<"\n";
       }
 }
+
+void Rpn::print_postfix()
+{
+  for(auto&i :postfix_expression)
+  {
+    std::cout<<i<<" ";
+  }
+  std::cout<<"\n";
+}
+

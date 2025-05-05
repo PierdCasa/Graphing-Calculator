@@ -1,11 +1,11 @@
 
-#include "function.h"
 
+#include "interface.h"
+#include <iostream>
 
 int main()
-{  
-  Function a;
-  a.GetRpn().Tokenize("2+3");
-  a.GetRpn().print();
+{ 
+  UI();
   return 0;
 }
+

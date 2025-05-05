@@ -1,6 +1,6 @@
 #include "function.h"
 
-Rpn& Function::GetRpn()
+Evaluate& Function::GetEvaluate()
 {
   return expr;
 }
