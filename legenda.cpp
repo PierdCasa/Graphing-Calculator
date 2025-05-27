@@ -1,6 +1,6 @@
 #include "legenda.h"
 
-Legenda::Legenda(std::string FontAddress,unsigned int width,unsigned int height,unsigned int winwidth):FontAddress(FontAddress),width(float(width)),height(float(height)),winwidth(float(winwidth)),rectangle({float(winwidth-width),float(height)}),inputbox({float(winwidth-width),float(height)/8.0f})
+Legenda::Legenda(std::string FontAddress,unsigned int width,unsigned int height,unsigned int winwidth):FontAddress(FontAddress),width(width/1.0f),height(height/1.0f),winwidth(winwidth/1.0f),rectangle({(winwidth-width)/1.0f,height/1.0f}),inputbox({(winwidth-width)/1.0f,height/8.0f})
 {   
 
     Legend=new Texts("LEGENDA:",FontAddress);
@@ -43,6 +43,8 @@ Legenda::Legenda(std::string FontAddress,unsigned int width,unsigned int height,
     Obs2->setFillColor(sf::Color (255,204,204,255));
    Obs22->setFillColor(sf::Color (255,204,204,255));
 
+   rectangle.setSize({1000.0f,1000.0f});
+   inputbox.setSize({600.0f,100.0f});
     L1->setCharacterSize(20.0f);
     L11->setCharacterSize(20.0f);
      L2->setCharacterSize(20.0f);
@@ -68,7 +70,6 @@ void Legenda::SetPosition()
 {
 
     rectangle.setPosition({width,0});
-
     inputbox.setPosition({width,0});
 
  Legend->setPosition({width,height/8.0f});
@@ -94,9 +95,7 @@ void Legenda::SetPosition()
 void Legenda::Draw(sf::RenderWindow* window)
 {
         window->draw(rectangle);
-
         window->draw(inputbox);
-
         window->draw(*Legend);
         window->draw(*L1);
         window->draw(*L11);

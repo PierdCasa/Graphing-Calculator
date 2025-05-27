@@ -4,33 +4,43 @@
 #include "OXOY.h"
 #include "zoom.h"
 #include "legenda.h"
-#include "function.h"
+#include "trigonometric.h"
+#include "logarithmic.h"
+#include "appsettings.h"
 
 //voiam sa o fac singleton da google mi a zis ca nu e o idee buna
 
+template<class T>
+
+void clearFunctii(std::vector<T*>&v)
+{
+    while(!v.empty())
+    {
+        delete v.back();
+        v.pop_back();
+    }
+}
+
 class App {
     private:
-
-        unsigned int width;
-        unsigned int height;
-        unsigned int winwidth;//asta i aia mai lunga
-        float SCALE_X=100.0f;
-        float SCALE_Y=100.0f;
-        float X_MIN=-10.0f;
-        float X_MAX=10.0f;
-        float STEP=0.01f;
         
+        //bug nu citeste + de la tastatura
+
+        AppSettings W;
         std::string title;
         sf::VideoMode vm;
         sf::RenderWindow *window;
         sf::View view;
-        std::string FontAddress;
-        //!!!!change TO YOUR specific PATH or arial.TTF
-        //e in constructorul lui App Path-ul(sus de tot)
+        
+        //W-- am denumit asa setarile aplicatiei pt a apela mai usor constructorii la alocare dinamica
+        //appsettings.h struct care contine toate setarile(font,width,height,winwidth,x_max,x_min,scale_x,scale_y)
 
+        //!!!!change AppSettings::FontAddress("...")  TO YOUR specific PATH or arial.TTF
+        
+        std::vector<Function*> Functii;
         Zoom zoom;
         Legenda legenda;
-        Function function;
+        
         std::string sStream;
         Texts  *X,*O,*Y,*input;
         OxOy axes;
@@ -44,7 +54,6 @@ class App {
         void initTexts();
         void initAxes();
         void initAxesLabels();
-        void initFunction(std::string sStream);
         void pollEvents();
         void updating();
         void rendering();
@@ -53,6 +62,8 @@ class App {
         void checkView(const sf::Event::Resized* resiz);
         sf::View getView(sf::View view,sf::Vector2u size);//sa faca resizing si sa nu se strice textu
         void running();
+        bool checkinputTRIGLOG(std::string str);//face si alocare dinamica
+        void drawFunctii(sf::RenderWindow* window);
 };
 
 //  std::cout<<"Introdu valoarea lui x:"<<"\n";

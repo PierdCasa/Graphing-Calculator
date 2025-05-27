@@ -1,29 +1,21 @@
 #include "function.h"
 #include <cmath>
-Function::Function(float X_MIN,float X_MAX,float STEP,unsigned int width,unsigned int height,float SCALE_X,float SCALE_Y):
-                    graph(sf::PrimitiveType::LineStrip),
-                    X_MIN(X_MIN),X_MAX(X_MAX),STEP(STEP),
-                    SCALE_X(SCALE_X),SCALE_Y(SCALE_Y),
-                    width(width),height(height)
+Function::Function(AppSettings W):W(W)
 {
     bool discontinuous=false;
 }
 
-Evaluate& Function::GetEvaluate()
-{
-  return expr;
-}
 
-void Function::plotFunction(sf::RenderWindow& window,sf::Color color)
+void Function::plotFunction(sf::Color color,std::function <float(float)> Functie)
 {   
     float y;
-    for(float x=X_MIN;x<=X_MAX;x+=STEP){
-        y=0;
+    for(float x=W.X_MIN;x<=W.X_MAX;x+=W.STEP){
+        y=Functie(x);
         if(discontinuous && (std::abs(y)>50 || std::isnan(y) || std::isinf(y))){
             continue;
         }
         sf::Vertex point;
-        point.position={width/2+x*SCALE_X,height/2-y*SCALE_Y};
+        point.position={W.width/2+x*W.SCALE_X,W.height/2-y*W.SCALE_Y};
         point.color=color;
         graph.append(point);
     }
