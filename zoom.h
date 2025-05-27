@@ -4,6 +4,7 @@
 #include "texts.h"
 #include <string>
 
+
 class Zoom:public virtual Drawable{
     private:
         int zoom;
@@ -15,3 +16,8 @@ class Zoom:public virtual Drawable{
         void setZoom(float SCALE_X);
         virtual ~Zoom();
 };
+
+sf::RenderWindow& operator>>(sf::RenderWindow& window, Zoom& obj);
+
+
+

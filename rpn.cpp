@@ -37,7 +37,7 @@ void Rpn::Tokenize(const std::string& infix_expression)
         --i;
         //adaug toate literele citite consecutive la curntToken
         //pt a vedea daca curntToken este operator trig. UNAR
-        if(IsFunction(curntToken)){
+        if(check.IsFunction(curntToken)){
           tokens.push_back({FUNCTION,curntToken});//il marchez ca fct.
         }
         else if(curntToken=="x"){
@@ -83,7 +83,7 @@ void Rpn::Tokenize(const std::string& infix_expression)
       }
       expect_operand=false;
     }
-    else if(IsOperator(c))
+    else if(check.IsOperator(c))
     {
         tokens.push_back(Token(OPERATOR,std::string(1,c)));
         expect_operand=true;
@@ -147,7 +147,7 @@ void Rpn::ToPostfix()
     }
     else if(token_i.type==OPERATOR)
     {
-        while(!operators.empty() && Precedence(operators.top())>=Precedence(token_i.value))
+        while(!operators.empty() && check.Precedence(operators.top())>=check.Precedence(token_i.value))
         {
           output.push_back(operators.top());
           operators.pop();
@@ -169,7 +169,7 @@ void Rpn::ToPostfix()
       {
         operators.pop();
       }
-      if(!operators.empty() && IsFunction(operators.top()))
+      if(!operators.empty() && check.IsFunction(operators.top()))
       {
         output.push_back(operators.top());
         operators.pop();

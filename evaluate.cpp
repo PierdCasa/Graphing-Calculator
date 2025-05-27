@@ -27,20 +27,7 @@ double Evaluate::ApplyFunction(const std::string& func,double val)
     if(func=="arcctg") return atan(1.0/val);
     return 0;
 }
-bool Evaluate::IsNumber(const std::string& s)
-{ 
-    //Verific daca e numar
-    //daca strigul e gol returneaza eroare
-    if(s.empty())
-      return false;
-    //initial endptr e null
-    char* endptr=nullptr;
-    //daca conversia a avut loc cu succes endptr va deveni diferit de null
-    //altfel va returna 0.0
-    if(strtod(s.c_str(),&endptr))
-      return true;
-    return false;
-}
+
 
 void Evaluate::EvaluatePostifx()
 { 
@@ -52,17 +39,17 @@ void Evaluate::EvaluatePostifx()
     {
       operands_aux.push(stod(x_value));
     }
-    else if(IsNumber(token_i))
+    else if(check.IsNumber(token_i))
     {
       operands_aux.push(stod(token_i));
     }
-    else if(IsFunction(token_i))
+    else if(Rpn::check.IsFunction(token_i))
     {
       double val=operands_aux.top();
       operands_aux.pop();
       operands_aux.push(ApplyFunction(token_i,val));
     }
-    else if(token_i.size()==1 && IsOperator(token_i[0]))
+    else if(token_i.size()==1 && check.IsOperator(token_i[0]))
     {
       double right=operands_aux.top();
       operands_aux.pop();
@@ -83,7 +70,7 @@ void Evaluate::PrintEvaluationAnswear()
 void Evaluate::SetValueOfX(std::string x_value)
 { 
   //setez valoarea lui x
-  if(Evaluate::IsNumber(x_value))
+  if(Evaluate::check.IsNumber(x_value))
   {
     this->x_value=x_value;
   }

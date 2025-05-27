@@ -5,7 +5,8 @@ App::App()
     : width(1200), height(800), winwidth(1800),
       FontAddress("/home/mario/Desktop/Proiect_POO_SFML/arial.TTF"),
       zoom(FontAddress),
-      legenda(FontAddress, width, height, winwidth)
+      legenda(FontAddress, width, height, winwidth),
+      function(X_MIN,X_MAX,STEP,width,height,SCALE_X,SCALE_Y)
 {
     initWindow();
     initTexts();
@@ -51,6 +52,12 @@ void App::initAxes(){
     axes.SetColor();
 }
 
+void App::initFunction(std::string sStream)
+{
+    function.GetEvaluate().Tokenize(sStream);
+    function.GetEvaluate().ToPostfix();
+}
+
 
 
 
@@ -84,10 +91,12 @@ void App::rendering(){
     window->clear(sf::Color::Black);
 
     //Draw here!! 
-    legenda.Draw(window);
-    axes.Draw(window);
+    (*window)>>legenda;//overloaded
+    (*window)>>axes;//overloaded
+
     zoom.setZoom(SCALE_X);
-    zoom.Draw(window);
+    
+    (*window)>>zoom;//overloaded
     window->draw(*X);
     window->draw(*O);
     window->draw(*Y);
@@ -158,6 +167,7 @@ void App::checkTextEntered(const sf::Event::TextEntered *textEntered)
             //si o sa le tratez cum sunt descrise in legenda
 
             sStream.erase(sStream.size()-1,1);
+            initFunction(sStream);
             if(sStream=="SIN")
             {
             //bool1=1;

@@ -19,7 +19,14 @@ set (SOURCES
     ${PROJECT_SOURCE_DIR}/OXOY.cpp 
     ${PROJECT_SOURCE_DIR}/drawable.cpp
     ${PROJECT_SOURCE_DIR}/zoom.cpp
-    ${PROJECT_SOURCE_DIR}/legenda.cpp
+    ${PROJECT_SOURCE_DIR}/evaluate.cpp
+    ${PROJECT_SOURCE_DIR}/function.cpp
+    ${PROJECT_SOURCE_DIR}/rpn.cpp
+    ${PROJECT_SOURCE_DIR}/token.cpp
+    ${PROJECT_SOURCE_DIR}/typecheck.cpp
+     ${PROJECT_SOURCE_DIR}/legenda.cpp
+
+
 
 
 

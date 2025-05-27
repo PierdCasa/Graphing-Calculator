@@ -118,3 +118,9 @@ void Legenda::Draw(sf::RenderWindow* window)
 Legenda::~Legenda(){
     delete Legend,L1,L11,L2,L22,L3,L33,Obs,Obs1,L4,L44,Obs2,Obs22,Del,Plus,Minus;
 };
+
+sf::RenderWindow& operator>>(sf::RenderWindow& window, Legenda& obj) {
+    obj.Draw(&window);
+    return window;
+}
+

@@ -4,6 +4,8 @@
 #include "OXOY.h"
 #include "zoom.h"
 #include "legenda.h"
+#include "function.h"
+
 //voiam sa o fac singleton da google mi a zis ca nu e o idee buna
 
 class App {
@@ -16,7 +18,7 @@ class App {
         float SCALE_Y=100.0f;
         float X_MIN=-10.0f;
         float X_MAX=10.0f;
-        // float STEP=0.01f;
+        float STEP=0.01f;
         
         std::string title;
         sf::VideoMode vm;
@@ -28,6 +30,7 @@ class App {
 
         Zoom zoom;
         Legenda legenda;
+        Function function;
         std::string sStream;
         Texts  *X,*O,*Y,*input;
         OxOy axes;
@@ -41,6 +44,7 @@ class App {
         void initTexts();
         void initAxes();
         void initAxesLabels();
+        void initFunction(std::string sStream);
         void pollEvents();
         void updating();
         void rendering();
@@ -50,3 +54,10 @@ class App {
         sf::View getView(sf::View view,sf::Vector2u size);//sa faca resizing si sa nu se strice textu
         void running();
 };
+
+//  std::cout<<"Introdu valoarea lui x:"<<"\n";
+//  std::getline(std::cin,c);
+//  a.GetEvaluate().SetValueOfX(c);
+//  a.GetEvaluate().EvaluatePostifx();
+//  std::cout<<"Rezultatul evaluarii:"<<"\n";
+//  a.GetEvaluate().PrintEvaluationAnswear();

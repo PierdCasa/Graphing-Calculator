@@ -4,7 +4,6 @@
 class OxOy:public virtual Drawable
 {   
     private:
-         //singleton avem doat un set de axe OX OY
         sf::VertexArray OX;
         sf::VertexArray OY;
         sf::VertexArray arrowOx;
@@ -19,3 +18,5 @@ class OxOy:public virtual Drawable
         void Draw(sf::RenderWindow* window);
         virtual ~OxOy();
 };
+
+sf::RenderWindow& operator>>(sf::RenderWindow& window, OxOy& obj);

@@ -29,6 +29,21 @@ bool TypeCheck::IsFunction(const std::string& s){
 }
 //verific daca str-ul s este o functie
 
+bool TypeCheck::IsNumber(const std::string& s)
+{ 
+    //Verific daca e numar
+    //daca strigul e gol returneaza eroare
+    if(s.empty())
+      return false;
+    //initial endptr e null
+    char* endptr=nullptr;
+    //daca conversia a avut loc cu succes endptr va deveni diferit de null
+    //altfel va returna 0.0
+    if(strtod(s.c_str(),&endptr))
+      return true;
+    return false;
+}
+
 int TypeCheck::Precedence(const std::string& op){
 
     if(op=="+" || op=="-")

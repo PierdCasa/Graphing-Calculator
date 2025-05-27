@@ -20,3 +20,8 @@ void Zoom::setZoom(float SCALE_X)
     ZoomPr->streamText(std::to_string(int(SCALE_X))+"%");
     //o conversie misto
 }
+
+sf::RenderWindow& operator>>(sf::RenderWindow& window, Zoom& obj) {
+    obj.Draw(&window);
+    return window;
+}

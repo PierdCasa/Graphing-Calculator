@@ -3,10 +3,10 @@
 #include "typecheck.h"
 #include <string>
 #include <vector>
-#include <unordered_map>
+// #include <unordered_map>
 
 
-class Rpn:public TypeCheck
+class Rpn
 { 
   protected:
 
@@ -14,6 +14,7 @@ class Rpn:public TypeCheck
     std::vector<Token> tokenized_expression;
     std::vector<Token> tokens;
     std::vector<std::string> postfix_expression;
+    TypeCheck check;
 
     
   public:

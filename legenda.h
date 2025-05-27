@@ -17,7 +17,9 @@ class Legenda:public Drawable
         Legenda(std::string FontAddress,unsigned int width,unsigned int height,unsigned int winwidth);
         void SetPosition();
         void Draw(sf::RenderWindow* window);
-        ~Legenda();
+        virtual ~Legenda();
 
 
 };
+
+sf::RenderWindow& operator>>(sf::RenderWindow& window, Legenda& obj);

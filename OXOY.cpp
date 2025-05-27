@@ -61,3 +61,8 @@ void OxOy::Draw(sf::RenderWindow* window)
 
 OxOy::~OxOy(){
 }
+
+sf::RenderWindow& operator>>(sf::RenderWindow& window, OxOy& obj) {
+    obj.Draw(&window);
+    return window;
+}
