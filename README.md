@@ -34,4 +34,4 @@ Press 'NumPad -' - zoom out
 Implementarea trasarii graficelor va fi realizata folosind SFML 3.0.
 Inputul va fi luat de la tastatura(prin SFML).
 
-Memorarea functiilor matematice se va face utilizand RPN si Shunting-Yard Algorithm, tranformand stringul dat drep input( INFIX) intr-un vector de Token-uri(POSTFIX).
+Memorarea functiilor matematice algebrice si mixte se va face utilizand RPN si Shunting-Yard Algorithm, tranformand stringul dat drep input( INFIX) intr-un vector de Token-uri(POSTFIX).
