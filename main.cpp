@@ -1,11 +1,9 @@
-
-
-#include "interface.h"
-#include <iostream>
+#include "app.h"
 
 int main()
-{ 
-  UI();
-  return 0;
+{   
+    App *app=new App();
+    app->running();
+    delete app;
+    return 0;
 }
-

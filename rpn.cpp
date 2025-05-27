@@ -5,42 +5,6 @@
 #include <cctype>
 #include <iostream>
 
-//DISCLAIMER:
-//functiile urmataore sunt destul de lungi, insa voi incerca ulterior
-//sa le separ astfel incat sa aiba functionalitati mai mici
-//(dupa ce functioneaza totul:)) )
-
-bool Rpn::IsOperator(char c)
-{
-  return c=='+' || c=='-' || c=='*' || c=='/' || c=='^';
-}
-//verific daca e op.
-
-bool Rpn::IsOperand(char c)
-{ 
-  return isdigit(c) || c=='x';
-}
-// verific daca e nr. sau necunoscuta "x"
-// pentru simplitate n̶u̶ d̶i̶n̶ l̶e̶n̶e̶ am ales o singura necunosuta denumita "x"
-
-int Rpn::Precedence(char op)
-{
-  if(op=='+' || op=='-')
-    return 1;
-  if(op=='*' || op=='/')
-    return 2;
-  if(op=='^')
-    return 3;
-  return 0;
-}
-//le declar ordinea
-
-//echivalent cu:
-//C++ 18
-// int precedence(char op) {
-//     unordered_map<char, int> prec = {{'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}, {'^', 3}};
-//     return prec.count(op) ? prec[op] : 0;
-// }
 
 
 /*functia urmatoare transforma stringul expresiei in token-uri.Notatia la care vrem sa ajungem 
@@ -63,93 +27,92 @@ void Rpn::Tokenize(const std::string& infix_expression)
     char c=infix_expression[i];
     if(isspace(c))
       continue;
-    if(isalpha(c) && c!='x')
+    if(isalpha(c))
     {
-      std::cout<<"Wrong input!!!"<<"\n";
-      exit(0);
+        curntToken.clear();
+        while(i<infix_expression.size() && isalpha(infix_expression[i])){
+          curntToken+=infix_expression[i];
+          ++i;
+        }
+        --i;
+        //adaug toate literele citite consecutive la curntToken
+        //pt a vedea daca curntToken este operator trig. UNAR
+        if(IsFunction(curntToken)){
+          tokens.push_back({FUNCTION,curntToken});//il marchez ca fct.
+        }
+        else if(curntToken=="x"){
+          if(i+1<infix_expression.size() && isdigit(infix_expression[i+1])){
+          tokens.push_back(Token(OPERAND,"x"));
+          tokens.push_back(Token(OPERATOR,"*"));
+          }
+          else{
+            tokens.push_back(Token(OPERAND,"x"));
+          }
+          expect_operand=false;
+        }
+        else{
+          std::cout<<"Functie sau variabila necunoscuta: "<<curntToken<<std::endl;
+          exit(0);
+        }
     }
-    if(c=='-' && expect_operand)
+    else if(isdigit(c) || (c=='-' && expect_operand==true))
     {
-      curntToken="-";
-      ++i;
-      //sa mearga si alea negative
-      
-      //acuma citim pana dam de alt semn
+        curntToken.clear();
+        if(c=='-') curntToken+=c,++i;
+        while(i<infix_expression.size() && (isdigit(infix_expression[i]) || infix_expression[i]=='.')) {
+          curntToken+=infix_expression[i];
+          ++i;
+        }
 
-      while(i<infix_expression.size() && (isdigit(infix_expression[i])|| infix_expression[i]=='.' || infix_expression[i]=='x'))
-      {
-        curntToken+=infix_expression[i];
-        ++i;
-      }
-      --i;
-      //merg in spate
+        if(i<infix_expression.size() && infix_expression[i]=='x'){
+          tokens.push_back(Token(OPERAND,curntToken));
+          tokens.push_back(Token(OPERATOR,"*"));
+          tokens.push_back(Token(OPERAND,"x"));
+        }
+        else {
+        tokens.push_back(Token(OPERAND,curntToken));
+        --i;
+        }
+        expect_operand=false;
     }
-    else if(IsOperand(c))
+    else if(c=='x')
     {
-      curntToken.clear();
-      while(i<infix_expression.size() && (isdigit(infix_expression[i]) || infix_expression[i]=='.' || infix_expression[i]=='x'))
-      {
-        curntToken+=infix_expression[i];
-        ++i;
+      tokens.push_back(Token(OPERAND,"x"));
+      if(i+1<infix_expression.size() && isdigit(infix_expression[i+1])){
+        tokens.push_back(Token(OPERATOR,"*"));
       }
-      //analog si pentru cand primul numar nu e < 0
-      --i;
+      expect_operand=false;
+    }
+    else if(IsOperator(c))
+    {
+        tokens.push_back(Token(OPERATOR,std::string(1,c)));
+        expect_operand=true;
+    }
+    else if(c=='(')
+    {
+        tokens.push_back(Token(LEFT_PARANTHESIS,"("));
+        expect_operand=true;
+    }
+    else if(c==')')
+    {
+        tokens.push_back(Token(RIGHT_PARANTHESIS,")"));
+        expect_operand=false;
     }
     else 
     {
-      curntToken.clear();
-      curntToken+=c;
-    }
-    
-    if(!curntToken.empty())
-    {
-      if(isdigit(curntToken[0]) || curntToken[0]=='-' || infix_expression[i]=='x')
-      {
-          int poz=curntToken.find('x');
-          if(poz!=-1 && curntToken.size()>1)
-          {
-            std::string leftPart=curntToken.substr(0,poz);
-            tokens.push_back({OPERAND, leftPart});
-            tokens.push_back({OPERAND,"x"});
-            tokens.push_back({OPERATOR,"*"});
-          }
-          //vedem daca x este in expresie
-          else 
-          {
-            tokens.push_back({OPERAND,curntToken});
-          }
-          expect_operand=false;
-      }
-      else if(IsOperator(curntToken[0]))
-      {
-          tokens.push_back({OPERATOR,curntToken});
-          expect_operand=true;
-      }
-      else if(curntToken=="(")
-      {
-        tokens.push_back({LEFT_PARANTHESIS,"("});
-        expect_operand=true;
-      }
-      else if(curntToken==")")
-      {
-        tokens.push_back({RIGHT_PARANTHESIS,")"});
-        expect_operand=false;
-      }
-      else
-      {
-        std::cout<<"Uknown character "<<curntToken<<std::endl;
+        std::cout<<"Functie sau variabila necunoscuta:"<<c<<std::endl;
         exit(0);
+    }
+   
         //poate fi actualizat sa nu termine programu eventual
         //oricum se ajunge aici doar daca baga cnv. caractere
         //chinezesti(sau &)
         
-      }
-    }
-    
   }
+    
   if(expect_operand==true)
   {
-    std::cout<<"Incomplete expression!"<<"\n";
+    std::cout<<"Inchide paranteza bine ba!!!!!!"<<"\n";
     exit(0);
   }
   //cu expect_operand verificam daca expresia a fost scrisa complet sau nu si afisam un msj. coresp.
@@ -168,7 +131,7 @@ pentru ultimul numar acesta va fi pus in coada si el, urmat de ceilalti(sau cela
 */
 void Rpn::ToPostfix()
 {
-  std::stack<char>operators;
+  std::stack<std::string>operators;
   std::vector<std::string> output;
 
   //ma iertati ca nu e c++11 da am strecurat si un i sa fie mai autentic
@@ -178,30 +141,45 @@ void Rpn::ToPostfix()
     {
       output.push_back(token_i.value);
     }
+    else if(token_i.type==FUNCTION)
+    {
+      operators.push(token_i.value);
+    }
     else if(token_i.type==OPERATOR)
     {
-        while(!operators.empty() && Precedence(operators.top())>=Precedence(token_i.value[0]))
+        while(!operators.empty() && Precedence(operators.top())>=Precedence(token_i.value))
         {
-          output.push_back(std::string(1,operators.top()));
+          output.push_back(operators.top());
           operators.pop();
         }
-        operators.push(token_i.value[0]);
+        operators.push(token_i.value);
     }
     else if(token_i.type==LEFT_PARANTHESIS)
     {
-      while(!operators.empty() && operators.top()!='(')
-      {
-        output.push_back(std::string(1,operators.top()));
+      operators.push("(");
+    }
+    else if(token_i.type==RIGHT_PARANTHESIS)
+    {
+      while(!operators.empty() && operators.top()!="(")
+      { 
+        output.push_back(operators.top());
         operators.pop();
       }
-      if(!operators.empty())
-      operators.pop();
+      if(!operators.empty() && operators.top()=="(")
+      {
+        operators.pop();
+      }
+      if(!operators.empty() && IsFunction(operators.top()))
+      {
+        output.push_back(operators.top());
+        operators.pop();
+      }
     }
   }
   
   while(!operators.empty())
   {
-    output.push_back(std::string(1,operators.top()));
+    output.push_back(operators.top());
     operators.pop();
   }
 
