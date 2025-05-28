@@ -96,8 +96,17 @@ bool App::checkinputTRIGLOG(std::string str)
 void App::drawFunctii(sf::RenderWindow* window)
 {   
     for(auto& i:Functii)
-    {
+    {   
         i->Draw(window);
+    }
+}
+
+void App::updateFunctiiSettings(AppSettings W)
+{
+    for(auto& i:Functii)
+    {
+        i->UpdateSettings(W);
+        i->Replot();
     }
 }
 
@@ -109,18 +118,19 @@ void App::pollEvents(){
         {
             window->close();
         }
-        else if(const auto* textEntered=event->getIf<sf::Event::TextEntered>())
-        {
-            checkTextEntered(textEntered);
+        else if(const auto *keyPressed=event->getIf<sf::Event::KeyPressed>()) {
+           checkZoomOrEsc(keyPressed);
+        }
+        
+        if(const auto* textEntered=event->getIf<sf::Event::TextEntered>())
+        {   
+           checkTextEntered(textEntered);
+           checkplusminus=0;
         }
         if(const auto* resiz=event->getIf<sf::Event::Resized>())
         {
             view=getView(view,resiz->size);
-        }
-        if(const auto *keyPressed=event->getIf<sf::Event::KeyPressed>()) {
-           checkZoomOrEsc(keyPressed);
-        }
-        
+        } 
 
     }
 }
@@ -169,20 +179,28 @@ void App::checkZoomOrEsc(const sf::Event::KeyPressed *KeyPressed)
     else if(KeyPressed->scancode==sf::Keyboard::Scancode::NumpadPlus){
       W.SCALE_X*=1.1f;
       W.SCALE_Y*=1.1f;
+      checkplusminus=1;
+      updateFunctiiSettings(W);
+
     }
     else if(KeyPressed->scancode==sf::Keyboard::Scancode::NumpadMinus){
       W.SCALE_X*=0.9f;
       W.SCALE_Y*=0.9f;
       W.X_MIN -= 10.0f;
       W.X_MAX += 10.0f;
+      checkplusminus=1;
+      updateFunctiiSettings(W);
+
     }
 }
 
 void App::checkTextEntered(const sf::Event::TextEntered *textEntered)
 {
-     if(textEntered->unicode !=43 && textEntered->unicode!=45)
+    //  if(textEntered->unicode !=43 && textEntered->unicode!=45)
+    //     {
+        if(!checkplusminus)
         {
-        if(textEntered->unicode<128 && textEntered->unicode!=8 && !error)
+        if(textEntered->unicode<128 && textEntered->unicode!=8 && !error )
         {
          sStream+=static_cast<char>(textEntered->unicode);
          input->streamText(sStream);

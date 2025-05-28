@@ -23,11 +23,13 @@ void Function::plotFunction(sf::Color color,std::function <float(float)> Functie
 }
 
 void Function::Draw(sf::RenderWindow* window)
-{
+{   
     window->draw(graph);
 }
 
-
+void Function::UpdateSettings(AppSettings WNew){
+    this->W=WNew;
+}
 
 //returneaza instanta unei functii
 

@@ -45,6 +45,7 @@ class App {
         Texts  *X,*O,*Y,*input;
         OxOy axes;
         bool error=0;
+        bool checkplusminus=0;
         
 
     public:
@@ -64,6 +65,7 @@ class App {
         void running();
         bool checkinputTRIGLOG(std::string str);//face si alocare dinamica
         void drawFunctii(sf::RenderWindow* window);
+        void updateFunctiiSettings(AppSettings W);
 };
 
 //  std::cout<<"Introdu valoarea lui x:"<<"\n";

@@ -14,7 +14,7 @@ class Function:public Drawable
 
     sf::VertexArray graph;
     AppSettings W;
-    static sf::Color color;
+    sf::Color color;
     bool discontinuous;
     //aici apare doar Evaluate deoarece RPN-ul va fi folosit pentru a 
     //evalua expresiile am ales ca acesta sa inglobat in clasa Evaluate
@@ -31,6 +31,7 @@ class Function:public Drawable
     void Draw(sf::RenderWindow* window);
     //Evaluate& GetEvaluate();
     //compunere
-    
+    virtual void Replot()=0; //pt a updata cand se face Zoom in Zoom out
+    void UpdateSettings(AppSettings WNew);
     virtual ~Function()=default;
 };

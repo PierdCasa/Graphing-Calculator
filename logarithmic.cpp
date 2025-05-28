@@ -13,12 +13,20 @@ void Logarithmic::CheckLogarithmicType()
     if(InfixExpression=="LN")
     {
         Functie=[](float x){return std::log(x);};
-        plotFunction(sf::Color (193,249,0),Functie);
+        this->color=sf::Color (193,249,0);
+        plotFunction(color,Functie);
     }
     else if(InfixExpression=="LG")
     {
         Functie=[](float x){return std::log10(x);};
-        plotFunction(sf::Color (193, 167, 248),Functie);
+        this->color=sf::Color (193, 167, 248);
+        plotFunction(color,Functie);
     }
 }
+void Logarithmic::Replot()
+{   
+    this->graph.resize(0);
+    plotFunction(color,Functie);
+}
+
 Logarithmic::~Logarithmic(){}

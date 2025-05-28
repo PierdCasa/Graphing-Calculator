@@ -10,5 +10,6 @@ class Trigonometric: public Function
     public:
         Trigonometric(AppSettings W,std::string InfixExpression);
         void CheckTrigonometricType();
+        void Replot();
         virtual ~Trigonometric();
 };

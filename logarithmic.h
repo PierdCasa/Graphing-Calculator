@@ -8,5 +8,6 @@ class Logarithmic: public Function
     public:
         Logarithmic(AppSettings W,std::string InfixExpression);
         void CheckLogarithmicType();
+        void Replot();
         virtual ~Logarithmic();
 };
