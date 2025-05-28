@@ -10,9 +10,13 @@ bool TypeCheck::IsOperator(char c){
 
 //verific daca e op.
 
-bool TypeCheck::IsOperand(char c){
+bool TypeCheck::IsOperand(char c,int type){
 
-    return isdigit(c) || c=='x' || c=='.';
+    if(type==1)
+        return isdigit(c) || c=='X' || c=='.';
+    if(type==2)
+        return isdigit(c) || c=='x' || c=='.';
+    return 0;
 
 }
 
@@ -21,30 +25,19 @@ bool TypeCheck::IsOperand(char c){
 // pentru simplitate n̶u̶ d̶i̶n̶ l̶e̶n̶e̶ am ales o singura necunosuta denumita "x"
 
 
-bool TypeCheck::IsFunction(const std::string& s){
+bool TypeCheck::IsFunction(const std::string& s,int type){
 
-    if(s=="sin"|| s=="cos"|| s=="tan"|| s=="ctg"|| s=="arcsin"|| s=="arccos"|| s=="arctg"|| s=="arcctg")
-        return 1;
+    if(type==2)
+       return s=="sin"|| s=="cos"|| s=="tan"|| s=="ctg"|| s=="arcsin"|| s=="arccos"|| s=="arctg"|| s=="arcctg" || s=="ln" || s=="lg";
+    if(type==1)
+       return 0;
     return 0;
+    //functiile se iau in considerare doar daca inputul este de tipul 2(mixte)(i.e litera mica)
+    
 }
 //verific daca str-ul s este o functie
 
-bool TypeCheck::IsNumber(const std::string& s)
-{ 
-    //Verific daca e numar
-    //daca strigul e gol returneaza eroare
-    if(s.empty())
-      return false;
-    //initial endptr e null
-    char* endptr=nullptr;
-    //daca conversia a avut loc cu succes endptr va deveni diferit de null
-    //altfel va returna 0.0
-    if(strtod(s.c_str(),&endptr))
-      return true;
-    return false;
-}
-
-int TypeCheck::Precedence(const std::string& op){
+int TypeCheck::Precedence(const std::string& op,int type){
 
     if(op=="+" || op=="-")
         return 1;
@@ -52,7 +45,7 @@ int TypeCheck::Precedence(const std::string& op){
         return 2;
     if(op=="^")
         return 3;
-    if(IsFunction(op))
+    if(IsFunction(op,type))
         return 4;
   return 0;
 
@@ -67,6 +60,6 @@ int TypeCheck::Precedence(const std::string& op){
 
 }
 
-TypeCheck::TypeCheck(){}
+TypeCheck::TypeCheck()=default;
 
 TypeCheck::~TypeCheck(){}

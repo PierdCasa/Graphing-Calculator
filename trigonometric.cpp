@@ -62,14 +62,14 @@ void Trigonometric::CheckTrigonometricType()
         plotFunction(color,Functie);
     }
 
-    //am scris de 10 ori plotFunction sa se inteleaga ce face :)))
+    //am scris de 10 ori plotFunction da e ok
 
 }
 
 void Trigonometric::Replot()
 {     
       this->graph.resize(0);
-     CheckTrigonometricType();
+     plotFunction(color,Functie);
 }
 
 Trigonometric::~Trigonometric(){}

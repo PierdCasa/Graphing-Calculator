@@ -3,7 +3,16 @@
 
 App::App()
     : zoom(W.FontAddress),
-      legenda(W.FontAddress,W.width,W.height,W.winwidth)
+      legenda(W.FontAddress,W.width,W.height,W.winwidth),
+Culori({ 
+        sf::Color::Red,
+        sf::Color::Cyan,
+        sf::Color::Green,
+        sf::Color::Blue,
+        sf::Color::Yellow,
+        sf::Color (159, 255, 255),
+        sf::Color (249, 133, 35),
+        sf::Color::Magenta,}),indexculoare(0)
 {
     initWindow();
     initTexts();
@@ -49,14 +58,6 @@ void App::initAxes(){
     axes.SetColor();
 }
 
-// void App::initFunction(std::string sStream)
-// {   
-//     //ceva de genul o sa vina doar voi verifica in prealabil sStream daca poate fi functie
-//     //checkisFunction
-
-//     // function.GetEvaluate().Tokenize(sStream);
-//     // function.GetEvaluate().ToPostfix();
-// }
 
 bool App::checkinputTRIGLOG(std::string str)
 {  
@@ -90,6 +91,69 @@ bool App::checkinputTRIGLOG(std::string str)
     if(str=="LG")
         {Functii.push_back(new Logarithmic(W,"LG"));
         return 1;}
+    return 0;
+}
+
+bool App::checkinputALGMIX(std::string str)
+{   
+    int Type;
+    for(auto& i:str)
+    {
+        if(std::isalpha(char(i)))
+        {
+            if(std::islower(char(i)))
+            {
+                Type=2;
+                break;
+            }
+            if(std::isupper(char(i)))
+            {
+                Type=1;
+                break;
+            }
+        }
+    }
+
+    if(Type==1)
+    {
+        Algebraic *p=new Algebraic(W);
+        p->GetEvaluate().setType(1);
+        p->GetEvaluate().Tokenize(str);
+        if(!p->GetEvaluate().getsuccesful())
+        {   
+            delete p;
+            return 0;
+        }
+        p->GetEvaluate().ToPostfix();
+        if(indexculoare==7)
+        {
+            this->indexculoare=0;
+        }
+        p->plotFunction(Culori[indexculoare]);
+        Functii.push_back(p);
+        indexculoare++;
+        return 1;
+    }
+    else if(Type==2)
+    {
+        Mixt *l=new Mixt(W);
+        l->GetEvaluate().setType(2);
+        l->GetEvaluate().Tokenize(str);
+        if(!l->GetEvaluate().getsuccesful())
+        {
+            delete l;
+            return 0;
+        }
+        l->GetEvaluate().ToPostfix();
+        if(indexculoare==7)
+        {
+            this->indexculoare=0;
+        }
+        l->plotFunction(Culori[indexculoare]);
+        Functii.push_back(l);
+        indexculoare++;
+        return 1;
+    }
     return 0;
 }
 
@@ -180,7 +244,7 @@ void App::checkZoomOrEsc(const sf::Event::KeyPressed *KeyPressed)
       W.SCALE_X*=1.1f;
       W.SCALE_Y*=1.1f;
       checkplusminus=1;
-      updateFunctiiSettings(W);
+      updateFunctiiSettings(W);//replot the drawn Functions
 
     }
     else if(KeyPressed->scancode==sf::Keyboard::Scancode::NumpadMinus){
@@ -196,8 +260,6 @@ void App::checkZoomOrEsc(const sf::Event::KeyPressed *KeyPressed)
 
 void App::checkTextEntered(const sf::Event::TextEntered *textEntered)
 {
-    //  if(textEntered->unicode !=43 && textEntered->unicode!=45)
-    //     {
         if(!checkplusminus)
         {
         if(textEntered->unicode<128 && textEntered->unicode!=8 && !error )
@@ -226,8 +288,7 @@ void App::checkTextEntered(const sf::Event::TextEntered *textEntered)
         //si dadea segfault
         if(textEntered->unicode==13 && !error && sStream!="")
         {   
-            //aicea o sa fie o funct check function sa vada daca str e o functie
-            //si o sa le tratez cum sunt descrise in legenda
+           
             
             sStream.erase(sStream.size()-1,1);
             if(checkinputTRIGLOG(sStream))
@@ -237,7 +298,11 @@ void App::checkTextEntered(const sf::Event::TextEntered *textEntered)
             else if(sStream=="del")
             {
                 clearFunctii(Functii);
-            sStream.clear();
+                sStream.clear();
+            }
+            else if(checkinputALGMIX(sStream))
+            {
+                sStream.clear();
             }
             else 
             {

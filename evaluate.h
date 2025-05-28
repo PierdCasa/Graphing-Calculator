@@ -1,15 +1,19 @@
+#pragma once
 #include "rpn.h"
 
 class Evaluate:public Rpn 
 {
   private:
-    std::string x_value;
-    double evaluation_answear;
+    //float evaluation_answear;
+    //optional ca nu o sa il folosesc momentan
   public:
-    void SetValueOfX(std::string x_value);
-    double ApplyOperator(double left,double right,const std::string& op);
-    double ApplyFunction(const std::string& func,double val);
-    void EvaluatePostifx();
-    void PrintEvaluationAnswear();
+    Evaluate();
+    //void SetValueOfX(std::string x_value);
+    float ApplyOperator(float left,float right,const std::string& op);
+    float ApplyFunction(const std::string& func,float val);
+    bool IsNumber(const std::string& s);
+    float EvaluatePostifx(float x_value);
+    //void PrintEvaluationAnswear(); 
+    virtual ~Evaluate();
 
 };

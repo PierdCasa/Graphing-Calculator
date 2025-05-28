@@ -7,7 +7,9 @@ class Algebraic: public Function
           std::vector<std::string> postfix_expression;
           Evaluate expr;
     public:
-        Algebraic()=default;
-        //Evaluate& Algebraic::GetEvaluate();
+        Algebraic(AppSettings W);
+        Evaluate& GetEvaluate();
+        void plotFunction(sf::Color color);
+        void Replot();
         virtual ~Algebraic();
 };

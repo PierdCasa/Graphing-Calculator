@@ -7,6 +7,8 @@
 
 
 
+Rpn::Rpn(){
+}
 /*functia urmatoare transforma stringul expresiei in token-uri.Notatia la care vrem sa ajungem 
 se mai numeste si RPN(Reverse Polish Notation) sau Notatia Poloneza Postfixata.Practic asa 
 functioneaza toate calculatoarele in spate.  Algoritmul care evalueaza expresiile RPN se numeste
@@ -18,7 +20,15 @@ Codul pt. tokenizare cu un for si multe else if-uri, nu ceva foarte special , ci
 caracterele in obiecte struct de tip token. (type,value) si NU le schimba(inca) ordinea din 
 expresia infixata*/
 void Rpn::Tokenize(const std::string& infix_expression)
-{ 
+{  
+  if(Type==2)//mixta
+  {
+    this->X="x";
+  }
+  else if(Type==1)//algebrica
+  {
+    this->X="X";
+  }
   bool expect_operand=true;//intial asteptam operanzi
   std::vector<Token> tokens;
   std::string curntToken;
@@ -37,22 +47,24 @@ void Rpn::Tokenize(const std::string& infix_expression)
         --i;
         //adaug toate literele citite consecutive la curntToken
         //pt a vedea daca curntToken este operator trig. UNAR
-        if(check.IsFunction(curntToken)){
+        if(check.IsFunction(curntToken,Type)){
           tokens.push_back({FUNCTION,curntToken});//il marchez ca fct.
+          existsfunction=1;
         }
-        else if(curntToken=="x"){
+        else if(curntToken==X){
           if(i+1<infix_expression.size() && isdigit(infix_expression[i+1])){
-          tokens.push_back(Token(OPERAND,"x"));
+          tokens.push_back(Token(OPERAND,X));
           tokens.push_back(Token(OPERATOR,"*"));
           }
           else{
-            tokens.push_back(Token(OPERAND,"x"));
+            tokens.push_back(Token(OPERAND,X));
           }
           expect_operand=false;
         }
         else{
           std::cout<<"Functie sau variabila necunoscuta: "<<curntToken<<std::endl;
-          exit(0);
+          succesful=0;
+          return;
         }
     }
     else if(isdigit(c) || (c=='-' && expect_operand==true))
@@ -64,10 +76,10 @@ void Rpn::Tokenize(const std::string& infix_expression)
           ++i;
         }
 
-        if(i<infix_expression.size() && infix_expression[i]=='x'){
+        if(i<infix_expression.size() && infix_expression[i]==static_cast<char>(X[0])){
           tokens.push_back(Token(OPERAND,curntToken));
           tokens.push_back(Token(OPERATOR,"*"));
-          tokens.push_back(Token(OPERAND,"x"));
+          tokens.push_back(Token(OPERAND,X));
         }
         else {
         tokens.push_back(Token(OPERAND,curntToken));
@@ -75,9 +87,9 @@ void Rpn::Tokenize(const std::string& infix_expression)
         }
         expect_operand=false;
     }
-    else if(c=='x')
+    else if(c==static_cast<char>(X[0]))
     {
-      tokens.push_back(Token(OPERAND,"x"));
+      tokens.push_back(Token(OPERAND,X));
       if(i+1<infix_expression.size() && isdigit(infix_expression[i+1])){
         tokens.push_back(Token(OPERATOR,"*"));
       }
@@ -101,7 +113,8 @@ void Rpn::Tokenize(const std::string& infix_expression)
     else 
     {
         std::cout<<"Functie sau variabila necunoscuta:"<<c<<std::endl;
-        exit(0);
+        succesful=0;
+        return;
     }
    
         //poate fi actualizat sa nu termine programu eventual
@@ -113,10 +126,17 @@ void Rpn::Tokenize(const std::string& infix_expression)
   if(expect_operand==true)
   {
     std::cout<<"Inchide paranteza bine ba!!!!!!"<<"\n";
-    exit(0);
+    succesful=0;
+    return;
   }
   //cu expect_operand verificam daca expresia a fost scrisa complet sau nu si afisam un msj. coresp.
   
+  if(Type==2 && !existsfunction)
+  {
+    succesful=0;
+    return;
+  }
+
   this->tokens=tokens;
   //acuatlizam tokens-urile pentru RPN
 
@@ -147,7 +167,7 @@ void Rpn::ToPostfix()
     }
     else if(token_i.type==OPERATOR)
     {
-        while(!operators.empty() && check.Precedence(operators.top())>=check.Precedence(token_i.value))
+        while(!operators.empty() && check.Precedence(operators.top(),Type)>=check.Precedence(token_i.value,Type))
         {
           output.push_back(operators.top());
           operators.pop();
@@ -169,7 +189,7 @@ void Rpn::ToPostfix()
       {
         operators.pop();
       }
-      if(!operators.empty() && check.IsFunction(operators.top()))
+      if(!operators.empty() && check.IsFunction(operators.top(),Type))
       {
         output.push_back(operators.top());
         operators.pop();
@@ -187,21 +207,44 @@ void Rpn::ToPostfix()
   //actualizam postfix_exp pentru RPN  
 }
 
-
-void Rpn::print()
+void Rpn::setType(int type)
 {
-  for(auto&i:tokens)
-      {
-        std::cout<<i.type<<" "<<i.value<<"\n";
-      }
+  this->Type=type;
+}
+bool Rpn::getsuccesful()
+{
+  return succesful;
 }
 
-void Rpn::print_postfix()
+Rpn::~Rpn()
 {
-  for(auto&i :postfix_expression)
-  {
-    std::cout<<i<<" ";
-  }
-  std::cout<<"\n";
+
 }
+
+
+// void Rpn::print()
+// {
+//   for(auto&i:tokens)
+//       {
+//         std::cout<<i.type<<" "<<i.value<<"\n";
+//       }
+// }
+
+
+
+// void Rpn::print_postfix()
+// {
+//   for(auto&i :postfix_expression)
+//   {
+//     std::cout<<i<<" ";
+//   }
+//   std::cout<<"\n";
+// }
+
+
+
+// void Rpn::prinsuccesful()
+// {
+//   std::cout<<succesful<<" ";
+// }
 
