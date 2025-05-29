@@ -4,12 +4,14 @@
 class Algebraic: public Function 
 {
     private:
-          std::vector<std::string> postfix_expression;
-          Evaluate expr;
+          std::vector<std::string> m_postfix_expression;
+          Evaluate m_expr;
+          static int m_algebraic_count;
     public:
         Algebraic(AppSettings W);
         Evaluate& GetEvaluate();
-        void plotFunction(sf::Color color);
+        void PlotFunction(sf::Color color);
         void Replot();
+        static void PrintAlgebraicCount();
         virtual ~Algebraic();
 };

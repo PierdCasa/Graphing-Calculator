@@ -4,11 +4,13 @@
 class Mixt: public Function 
 {
     private:
-        Evaluate expr;
+        Evaluate m_expr;
+        static int m_mixt_count;
     public:
-        Mixt(AppSettings W);
+        Mixt(AppSettings w);
         Evaluate& GetEvaluate();
-        void plotFunction(sf::Color);
+        void PlotFunction(sf::Color);
         void Replot();
+        static void PrintMixtCount();
         virtual ~Mixt();
 };

@@ -1,65 +1,71 @@
 #include "trigonometric.h"
 #include <cmath>
-Trigonometric::Trigonometric(AppSettings W,std::string InfixExpression):Function(W),InfixExpression(InfixExpression){
+#include <iostream>
+
+int Trigonometric::m_trigonometric_count=0;
+
+Trigonometric::Trigonometric(AppSettings w,std::string infix_expression):Function(w),m_infix_expression(infix_expression){
+    m_function_count++;
+    m_trigonometric_count++;
     CheckTrigonometricType();
 }
 
 void Trigonometric::CheckTrigonometricType()
 {
-    if(InfixExpression=="SIN")
+    if(m_infix_expression=="SIN")
     {
-        Functie=[](float x){return std::sin(x);};
-        this->color=sf::Color (159, 255, 255);
-        plotFunction(color,Functie);
+        m_functie=[](float x){return std::sin(x);};
+        this->m_color=sf::Color (159, 255, 255);
+        PlotFunction(m_color,m_functie);
         //din C++ 11 s-a introdus functional care permite memorarea functiilor de toate tipurile in variabile
     }
-    else if(InfixExpression=="COS")
+    else if(m_infix_expression=="COS")
     {
-        Functie=[](float x){return std::cos(x);};
-        this->color=sf::Color (249, 133, 35);
-        plotFunction(color,Functie);
+        m_functie=[](float x){return std::cos(x);};
+        this->m_color=sf::Color (249, 133, 35);
+        PlotFunction(m_color,m_functie);
     }
-    else if(InfixExpression=="TG")
+    else if(m_infix_expression=="TG")
     {
-        Functie=[](float x){return std::tan(x);};
+        m_functie=[](float x){return std::tan(x);};
         //aici as fi putut face o aproximatie mai buna
         //mai exact cu std::sin(x)/std::cos(x)
         //but it's ok asa
-        this->color=sf::Color::Magenta;
-        plotFunction(color,Functie);
+        this->m_color=sf::Color::Magenta;
+        PlotFunction(m_color,m_functie);
     }
-    else if(InfixExpression=="CTG")
+    else if(m_infix_expression=="CTG")
     {
-        Functie=[](float x){return 1.0f/std::tan(x);};
-        this->color=sf::Color::Yellow;
-        plotFunction(color,Functie);
+        m_functie=[](float x){return 1.0f/std::tan(x);};
+        this->m_color=sf::Color::Yellow;
+        PlotFunction(m_color,m_functie);
         //inversa cotangentei
     }
-    else if(InfixExpression=="ARCSIN")
+    else if(m_infix_expression=="ARCSIN")
     {
-        Functie=[](float x){return std::asin(x);};
-        this->color=sf::Color::Blue;
-        plotFunction(color,Functie);
+        m_functie=[](float x){return std::asin(x);};
+        this->m_color=sf::Color::Blue;
+        PlotFunction(m_color,m_functie);
     }
-    else if(InfixExpression=="ARCCOS")
+    else if(m_infix_expression=="ARCCOS")
     {
-        Functie=[](float x){return std::acos(x);};
-        this->color=sf::Color::Green;
-        plotFunction(color,Functie);
+        m_functie=[](float x){return std::acos(x);};
+        this->m_color=sf::Color::Green;
+        PlotFunction(m_color,m_functie);
         
     }
-    else if(InfixExpression=="ARCTG")
+    else if(m_infix_expression=="ARCTG")
     {
-        Functie=[](float x){return std::atan(x);};
-        this->color=sf::Color::Cyan;
-        plotFunction(color,Functie);
+        m_functie=[](float x){return std::atan(x);};
+        this->m_color=sf::Color::Cyan;
+        PlotFunction(m_color,m_functie);
     }
-    else if(InfixExpression=="ARCCTG")
+    else if(m_infix_expression=="ARCCTG")
     {   
-        Functie=[](float x){return static_cast<float>(M_PI_2) - std::atan(x);}; //am updatat fiindca nu desena bine
+        m_functie=[](float x){return static_cast<float>(M_PI_2) - std::atan(x);}; //am updatat fiindca nu desena bine
         //M_PI_2 implementation of PI in <cmath>
-        this->color=sf::Color::Red;
-        plotFunction(color,Functie);
+        this->m_color=sf::Color::Red;
+        PlotFunction(m_color,m_functie);
     }
 
     //am scris de 10 ori plotFunction da e ok
@@ -68,8 +74,17 @@ void Trigonometric::CheckTrigonometricType()
 
 void Trigonometric::Replot()
 {     
-      this->graph.resize(0);
-     plotFunction(color,Functie);
+      this->m_graph.resize(0);
+     PlotFunction(m_color,m_functie);
 }
 
+void Trigonometric::PrintTrigonometricCount()
+{   
+    if(m_trigonometric_count>1)
+    {std::cout<<m_trigonometric_count<<" TRIGONOMETRICE"<<"\n";}
+    else if(m_trigonometric_count==1)
+    {
+        std::cout<<m_trigonometric_count<<" TRIGONOMETRICA"<<"\n";
+    }
+}
 Trigonometric::~Trigonometric(){}

@@ -21,7 +21,7 @@ float Evaluate::ApplyOperator(float left,float right,const std::string& op)
 float Evaluate::ApplyFunction(const std::string& func,float val)
 {   
     //definesc functiile
-    if(Type==2) //ca doar acolo avem d astea 
+    if(m_type==2) //ca doar acolo avem d astea 
     {
     if(func=="sin") return sin(val);
     if(func=="cos") return cos(val);
@@ -56,9 +56,9 @@ float Evaluate::EvaluatePostifx(float x_value)
 { 
   //procesul inversat al algoritmului de Transformare RPN
   std::stack<float> operands_aux;
-  for(std::string& token_i:postfix_expression)
+  for(std::string& token_i:m_postfix_expression)
   { 
-    if(token_i==X)
+    if(token_i==m_x)
     {
       operands_aux.push(x_value);
     }
@@ -66,13 +66,13 @@ float Evaluate::EvaluatePostifx(float x_value)
     {
       operands_aux.push(stod(token_i));
     }
-    else if(Rpn::check.IsFunction(token_i,Type))
+    else if(Rpn::m_check._IsFunction(token_i,m_type))
     {
       double val=operands_aux.top();
       operands_aux.pop();
       operands_aux.push(ApplyFunction(token_i,val));
     }
-    else if(token_i.size()==1 && check.IsOperator(token_i[0]))
+    else if(token_i.size()==1 && m_check._IsOperator(token_i[0]))
     {
       double right=operands_aux.top();
       operands_aux.pop();

@@ -4,12 +4,14 @@
 class Trigonometric: public Function 
 {
     private:
-        std::string InfixExpression;
-        std::function<float(float)> Functie;
+        std::string m_infix_expression;
+        std::function<float(float)> m_functie;
+        static int m_trigonometric_count;
     
     public:
-        Trigonometric(AppSettings W,std::string InfixExpression);
+        Trigonometric(AppSettings w,std::string infix_expression);
         void CheckTrigonometricType();
         void Replot();
+        static void PrintTrigonometricCount();
         virtual ~Trigonometric();
 };

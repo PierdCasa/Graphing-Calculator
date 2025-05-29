@@ -7,13 +7,13 @@
 
 class Zoom:public virtual Drawable{
     private:
-        int zoom;
-        Texts *ZoomPr;
-        std::string FontAddress;
+        int m_zoom;
+        Texts *m_zoom_pr;
+        std::string m_font_address;
     public:
-        Zoom(std::string FontAddress);
+        Zoom(std::string font_address);
         void Draw(sf::RenderWindow* window);
-        void setZoom(float SCALE_X);
+        void SetZoom(float scale_x);
         virtual ~Zoom();
 };
 

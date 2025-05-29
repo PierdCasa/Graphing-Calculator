@@ -23,7 +23,7 @@ set (SOURCES
     ${PROJECT_SOURCE_DIR}/function.cpp
     ${PROJECT_SOURCE_DIR}/rpn.cpp
     ${PROJECT_SOURCE_DIR}/token.cpp
-    ${PROJECT_SOURCE_DIR}/typecheck.cpp
+    ${PROJECT_SOURCE_DIR}/type_check.cpp
     ${PROJECT_SOURCE_DIR}/legenda.cpp
     ${PROJECT_SOURCE_DIR}/trigonometric.cpp
     ${PROJECT_SOURCE_DIR}/logarithmic.cpp

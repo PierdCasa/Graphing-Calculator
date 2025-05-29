@@ -1,7 +1,13 @@
 #include "logarithmic.h"
 #include <cmath>
+#include <iostream>
 
-Logarithmic::Logarithmic(AppSettings W,std::string InfixExpression):Function(W),InfixExpression(InfixExpression){
+int Logarithmic::m_logarithmic_count=0;
+
+Logarithmic::Logarithmic(AppSettings w,std::string infix_expression):Function(w),m_infix_expression(infix_expression){
+    
+    m_function_count++;
+    m_logarithmic_count++;
     CheckLogarithmicType();
 }
 //la culori as fi putut sa fac ceva clasa care randomizeaza
@@ -10,23 +16,32 @@ Logarithmic::Logarithmic(AppSettings W,std::string InfixExpression):Function(W),
 
 void Logarithmic::CheckLogarithmicType()
 {
-    if(InfixExpression=="LN")
+    if(m_infix_expression=="LN")
     {
-        Functie=[](float x){return std::log(x);};
-        this->color=sf::Color (193,249,0);
-        plotFunction(color,Functie);
+        m_functie=[](float x){return std::log(x);};
+        this->m_color=sf::Color (193,249,0);
+        PlotFunction(m_color,m_functie);
     }
-    else if(InfixExpression=="LG")
+    else if(m_infix_expression=="LG")
     {
-        Functie=[](float x){return std::log10(x);};
-        this->color=sf::Color (193, 167, 248);
-        plotFunction(color,Functie);
+        m_functie=[](float x){return std::log10(x);};
+        this->m_color=sf::Color (193, 167, 248);
+        PlotFunction(m_color,m_functie);
     }
 }
 void Logarithmic::Replot()
 {   
-    this->graph.resize(0);
-    plotFunction(color,Functie);
+    this->m_graph.resize(0);
+    PlotFunction(m_color,m_functie);
 }
 
+void Logarithmic::PrintLogarithmicCount()
+{   
+    if(m_logarithmic_count>1)
+    {std::cout<<m_logarithmic_count<<" LOGARITMICE"<<"\n";}
+    else if(m_logarithmic_count==1)
+    {
+     std::cout<<m_logarithmic_count<<" LOGARITMICA"<<"\n";
+    }
+}
 Logarithmic::~Logarithmic(){}

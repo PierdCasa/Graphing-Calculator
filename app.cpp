@@ -2,9 +2,9 @@
 
 
 App::App()
-    : zoom(W.FontAddress),
-      legenda(W.FontAddress,W.width,W.height,W.winwidth),
-Culori({ 
+    : m_zoom(m_w.font_address),
+      m_legenda(m_w.font_address,m_w.width,m_w.height,m_w.win_width),
+m_culori({ 
         sf::Color::Red,
         sf::Color::Cyan,
         sf::Color::Green,
@@ -12,265 +12,260 @@ Culori({
         sf::Color::Yellow,
         sf::Color (159, 255, 255),
         sf::Color (249, 133, 35),
-        sf::Color::Magenta,}),indexculoare(0)
+        sf::Color::Magenta,}),m_index_culoare(0)
 {
-    initWindow();
-    initTexts();
-    initAxes();
+    InitWindow();
+    InitTexts();
+    InitAxes();
 }
 
 
-void App::initWindow(){
-    W.width=1200;
-    W.height=800;
-    W.winwidth=1800;
-    title="Graphing Calculator";
-    vm=sf::VideoMode({W.winwidth,W.height});
-    window=new sf::RenderWindow(vm,title);
-    window->setFramerateLimit(60);
-    view=sf::View(sf::FloatRect({{0,0},{float(W.winwidth),float(W.height)}}));
+void App::InitWindow(){
+    m_w.width=1200;
+    m_w.height=800;
+    m_w.win_width=1800;
+    m_title="Graphing Calculator";
+    m_vm=sf::VideoMode({m_w.win_width,m_w.height});
+    m_window=new sf::RenderWindow(m_vm,m_title);
+    m_window->setFramerateLimit(60);
+    m_view=sf::View(sf::FloatRect({{0,0},{float(m_w.win_width),float(m_w.height)}}));
 }
 
-void App::initTexts(){
-    X=new Texts("x",W.FontAddress);
-    O=new Texts("o",W.FontAddress);
-    Y=new Texts("y",W.FontAddress);
-    input=new Texts("",W.FontAddress);
+void App::InitTexts(){
+    m_X=new Texts("x",m_w.font_address);
+    m_O=new Texts("o",m_w.font_address);
+    m_Y=new Texts("y",m_w.font_address);
+    m_input=new Texts("",m_w.font_address);
 
-    X->setOrigin(X->getGlobalBounds().size/2.0f);
-    O->setOrigin(O->getGlobalBounds().size/2.0f);
-    Y->setOrigin(X->getGlobalBounds().size/2.0f);
+    m_X->setOrigin(m_X->getGlobalBounds().size/2.0f);
+    m_O->setOrigin(m_O->getGlobalBounds().size/2.0f);
+    m_Y->setOrigin(m_X->getGlobalBounds().size/2.0f);
 
-    X->setPosition({W.width/1.03f,W.height/2.0f});
-    O->setPosition({W.width/1.95f,W.height/1.95f});
-    Y->setPosition({W.width/1.95f,0.0f});
-    input->setPosition({W.width/1.0f,0.0f});
+    m_X->setPosition({m_w.width/1.03f,m_w.height/2.0f});
+    m_O->setPosition({m_w.width/1.95f,m_w.height/1.95f});
+    m_Y->setPosition({m_w.width/1.95f,0.0f});
+    m_input->setPosition({m_w.width/1.0f,0.0f});
 
-    X->setFillColor(sf::Color (255,192,203,255));
-    O->setFillColor(sf::Color (255,192,203,255));
-    Y->setFillColor(sf::Color (255,192,203,255));
-    input->setFillColor(sf::Color::White);
+    m_X->setFillColor(sf::Color (255,192,203,255));
+    m_O->setFillColor(sf::Color (255,192,203,255));
+    m_Y->setFillColor(sf::Color (255,192,203,255));
+    m_input->setFillColor(sf::Color::White);
     
 }
 
-void App::initAxes(){
-    axes.SetPosition(W.width,W.height);
-    axes.SetColor();
+void App::InitAxes(){
+    m_axes.SetPosition(m_w.width,m_w.height);
+    m_axes.SetColor();
 }
 
 
-bool App::checkinputTRIGLOG(std::string str)
+bool App::CheckInputTRIGLOG(std::string str)
 {  
     if(str=="SIN")
-        {Functii.push_back(new Trigonometric(W,"SIN"));
+        {m_functii.push_back(new Trigonometric(m_w,"SIN"));
         return 1;}
     if(str=="COS")
-        {Functii.push_back(new Trigonometric(W,"COS"));
+        {m_functii.push_back(new Trigonometric(m_w,"COS"));
         return 1;}
     if(str=="TG")
-        {Functii.push_back(new Trigonometric(W,"TG"));
+        {m_functii.push_back(new Trigonometric(m_w,"TG"));
         return 1;}
     if(str=="CTG")
-        {Functii.push_back(new Trigonometric(W,"CTG"));
+        {m_functii.push_back(new Trigonometric(m_w,"CTG"));
         return 1;}
     if(str=="ARCSIN")
-        {Functii.push_back(new Trigonometric(W,"ARCSIN"));
+        {m_functii.push_back(new Trigonometric(m_w,"ARCSIN"));
         return 1;}
     if(str=="ARCCOS")
-        {Functii.push_back(new Trigonometric(W,"ARCCOS"));
+        {m_functii.push_back(new Trigonometric(m_w,"ARCCOS"));
         return 1;}
     if(str=="ARCTG")
-        {Functii.push_back(new Trigonometric(W,"ARCTG"));
+        {m_functii.push_back(new Trigonometric(m_w,"ARCTG"));
         return 1;}
     if(str=="ARCCTG")
-        {Functii.push_back(new Trigonometric(W,"ARCCTG"));
+        {m_functii.push_back(new Trigonometric(m_w,"ARCCTG"));
         return 1;}
     if(str=="LN")
-        {Functii.push_back(new Logarithmic(W,"LN"));
+        {m_functii.push_back(new Logarithmic(m_w,"LN"));
         return 1;}
     if(str=="LG")
-        {Functii.push_back(new Logarithmic(W,"LG"));
+        {m_functii.push_back(new Logarithmic(m_w,"LG"));
         return 1;}
     return 0;
 }
 
-bool App::checkinputALGMIX(std::string str)
+bool App::CheckInputALGMIX(std::string str)
 {   
-    int Type;
+    int type;
     for(auto& i:str)
     {
         if(std::isalpha(char(i)))
         {
             if(std::islower(char(i)))
             {
-                Type=2;
+                type=2;
                 break;
             }
             if(std::isupper(char(i)))
             {
-                Type=1;
+                type=1;
                 break;
             }
         }
     }
 
-    if(Type==1)
+    if(type==1)
     {
-        Algebraic *p=new Algebraic(W);
-        p->GetEvaluate().setType(1);
+        Algebraic *p=new Algebraic(m_w);
+        p->GetEvaluate().SetType(1);
         p->GetEvaluate().Tokenize(str);
-        if(!p->GetEvaluate().getsuccesful())
+        if(!p->GetEvaluate().GetSuccesful())
         {   
             delete p;
             return 0;
         }
         p->GetEvaluate().ToPostfix();
-        if(indexculoare==7)
+        if(m_index_culoare==7)
         {
-            this->indexculoare=0;
+            this->m_index_culoare=0;
         }
-        p->plotFunction(Culori[indexculoare]);
-        Functii.push_back(p);
-        indexculoare++;
+        p->PlotFunction(m_culori[m_index_culoare]);
+        m_functii.push_back(p);
+        m_index_culoare++;
         return 1;
     }
-    else if(Type==2)
+    else if(type==2)
     {
-        Mixt *l=new Mixt(W);
-        l->GetEvaluate().setType(2);
+        Mixt *l=new Mixt(m_w);
+        l->GetEvaluate().SetType(2);
         l->GetEvaluate().Tokenize(str);
-        if(!l->GetEvaluate().getsuccesful())
+        if(!l->GetEvaluate().GetSuccesful())
         {
             delete l;
             return 0;
         }
         l->GetEvaluate().ToPostfix();
-        if(indexculoare==7)
+        if(m_index_culoare==7)
         {
-            this->indexculoare=0;
+            this->m_index_culoare=0;
         }
-        l->plotFunction(Culori[indexculoare]);
-        Functii.push_back(l);
-        indexculoare++;
+        l->PlotFunction(m_culori[m_index_culoare]);
+        m_functii.push_back(l);
+        m_index_culoare++;
         return 1;
     }
     return 0;
 }
 
-void App::drawFunctii(sf::RenderWindow* window)
+void App::DrawFunctii(sf::RenderWindow* window)
 {   
-    for(auto& i:Functii)
+    for(auto& i:m_functii)
     {   
         i->Draw(window);
     }
 }
 
-void App::updateFunctiiSettings(AppSettings W)
+void App::UpdateFunctiiSettings(AppSettings w)
 {
-    for(auto& i:Functii)
+    for(auto& i:m_functii)
     {
-        i->UpdateSettings(W);
+        i->UpdateSettings(w);
         i->Replot();
     }
 }
 
 
-void App::pollEvents(){
-    while(const std::optional event=window->pollEvent())
+void App::PollEvents(){
+    while(const std::optional event=m_window->pollEvent())
     {
         if(event->is<sf::Event::Closed>())
         {
-            window->close();
+            m_window->close();
         }
         else if(const auto *keyPressed=event->getIf<sf::Event::KeyPressed>()) {
-           checkZoomOrEsc(keyPressed);
+           CheckZoomOrEsc(keyPressed);
         }
         
         if(const auto* textEntered=event->getIf<sf::Event::TextEntered>())
         {   
-           checkTextEntered(textEntered);
-           checkplusminus=0;
+           CheckTextEntered(textEntered);
+           m_check_plus_minus=0;
         }
         if(const auto* resiz=event->getIf<sf::Event::Resized>())
         {
-            view=getView(view,resiz->size);
+            m_view=GetView(m_view,resiz->size);
         } 
 
     }
 }
-void App::updating(){
-    pollEvents();
+void App::Updating(){
+    PollEvents();
 }
-void App::rendering(){
-    window->setView(view);
-    window->clear(sf::Color::Black);
+void App::Rendering(){
+    m_window->setView(m_view);
+    m_window->clear(sf::Color::Black);
 
     //Draw here!!
-    drawFunctii(window); 
+    DrawFunctii(m_window); 
     
-    zoom.setZoom(W.SCALE_X);
-    (*window)>>zoom;//overloaded
-    (*window)>>axes;//overloaded
-    window->draw(*X);
-    window->draw(*O);
-    window->draw(*Y);
-    (*window)>>legenda;//overloaded
-    window->draw(*input);
+    m_zoom.SetZoom(m_w.scale_x);
+    (*m_window)>>m_zoom;//overloaded
+    (*m_window)>>m_axes;//overloaded
+    m_window->draw(*m_X);
+    m_window->draw(*m_O);
+    m_window->draw(*m_Y);
+    (*m_window)>>m_legenda;//overloaded
+    m_window->draw(*m_input);
     
     
    
-    window->display();
+    m_window->display();
 }
 
-App::~App(){
-    delete X,O,Y;
-    delete window;
-}
-
-void App::running(){
-    while(window->isOpen()){
-        updating();
-        rendering();
+void App::Running(){
+    while(m_window->isOpen()){
+        Updating();
+        Rendering();
     }
 }
 
-void App::checkZoomOrEsc(const sf::Event::KeyPressed *KeyPressed)
+void App::CheckZoomOrEsc(const sf::Event::KeyPressed *KeyPressed)
 {
     if(KeyPressed->scancode==sf::Keyboard::Scancode::Escape)
     {
-     window->close();
+     m_window->close();
     }
     else if(KeyPressed->scancode==sf::Keyboard::Scancode::NumpadPlus){
-      W.SCALE_X*=1.1f;
-      W.SCALE_Y*=1.1f;
-      checkplusminus=1;
-      updateFunctiiSettings(W);//replot the drawn Functions
+      m_w.scale_x*=1.1f;
+      m_w.scale_y*=1.1f;
+      m_check_plus_minus=1;
+      UpdateFunctiiSettings(m_w);//replot the drawn Functions
 
     }
     else if(KeyPressed->scancode==sf::Keyboard::Scancode::NumpadMinus){
-      W.SCALE_X*=0.9f;
-      W.SCALE_Y*=0.9f;
-      W.X_MIN -= 10.0f;
-      W.X_MAX += 10.0f;
-      checkplusminus=1;
-      updateFunctiiSettings(W);
+      m_w.scale_x*=0.9f;
+      m_w.scale_y*=0.9f;
+      m_w.x_min -= 10.0f;
+      m_w.x_max += 10.0f;
+      m_check_plus_minus=1;
+      UpdateFunctiiSettings(m_w);
 
     }
 }
 
-void App::checkTextEntered(const sf::Event::TextEntered *textEntered)
+void App::CheckTextEntered(const sf::Event::TextEntered *textEntered)
 {
-        if(!checkplusminus)
+        if(!m_check_plus_minus)
         {
-        if(textEntered->unicode<128 && textEntered->unicode!=8 && !error )
+        if(textEntered->unicode<128 && textEntered->unicode!=8 && !m_error )
         {
-         sStream+=static_cast<char>(textEntered->unicode);
-         input->streamText(sStream);
+         m_sStream+=static_cast<char>(textEntered->unicode);
+         m_input->StreamText(m_sStream);
         }
-        else if(textEntered->unicode==8 && sStream!="" && !error)
+        else if(textEntered->unicode==8 && m_sStream!="" && !m_error)
         {
-            sStream.erase(sStream.size()-1,1);
-            input->streamText(sStream);
+            m_sStream.erase(m_sStream.size()-1,1);
+            m_input->StreamText(m_sStream);
         }
         
         else 
@@ -280,68 +275,82 @@ void App::checkTextEntered(const sf::Event::TextEntered *textEntered)
             //pana nu apasa alta tasta
 
             //urmeaza sa renunt si la exit(0) urile din algoritmi (RPN,FUNCTION,EVALUATE)
-            error=0;
-            sStream.clear();
-            input->streamText(sStream);
+            m_error=0;
+            m_sStream.clear();
+            m_input->StreamText(m_sStream);
         }
         //am bagat si sStream!="" ca inainte stergeam mai mult decat trebuia
         //si dadea segfault
-        if(textEntered->unicode==13 && !error && sStream!="")
+        if(textEntered->unicode==13 && !m_error && m_sStream!="")
         {   
            
             
-            sStream.erase(sStream.size()-1,1);
-            if(checkinputTRIGLOG(sStream))
+            m_sStream.erase(m_sStream.size()-1,1);
+            if(CheckInputTRIGLOG(m_sStream))
             {   
-                sStream.clear();
+                m_sStream.clear();
             }
-            else if(sStream=="del")
+            else if(m_sStream=="del")
             {
-                clearFunctii(Functii);
-                sStream.clear();
+                clearFunctii(m_functii);
+                m_sStream.clear();
             }
-            else if(checkinputALGMIX(sStream))
+            else if(CheckInputALGMIX(m_sStream))
             {
-                sStream.clear();
+                m_sStream.clear();
             }
             else 
             {
-                sStream.clear();
-                sStream="ERROR";
-                error=1;
+                m_sStream.clear();
+                m_sStream="ERROR";
+                m_error=1;
             }
-            input->streamText(sStream);
+            m_input->StreamText(m_sStream);
         }
     }
 }
 
-void App::checkView(const sf::Event::Resized* resiz)
+void App::CheckView(const sf::Event::Resized* resiz)
 {
-    view=getView(view,resiz->size);
+    m_view=GetView(m_view,resiz->size);
 }
 
-sf::View App::getView(sf::View view, sf::Vector2u size) {
+sf::View App::GetView(sf::View view, sf::Vector2u size) {
     //variab. acestea sunt redunante
     //functia face resizing la imagine setand-o in timpul render-ului
-    int windWidth=size.x;
-    int windHeight=size.y;
-    float windRatio=windWidth/static_cast<float>(windHeight);
-    float viewRatio=view.getSize().x/view.getSize().y;
-    float sizeX=1.0f, sizeY=1.0f, posX=0.0f,posY=0.0f;
+    int wind_width=size.x;
+    int wind_height=size.y;
+    float wind_ratio=wind_width/static_cast<float>(wind_height);
+    float view_ratio=view.getSize().x/view.getSize().y;
+    float size_x=1.0f, size_y=1.0f, pos_x=0.0f,pos_y=0.0f;
 
-    bool horizSpacing=true;// pt a verifica daca avem stretch pe oriz
+    bool horiz_spacing=true;// pt a verifica daca avem stretch pe oriz
 
-    if(windRatio<viewRatio)
-        horizSpacing = false;
+    if(wind_ratio<view_ratio)
+        horiz_spacing = false;
 
-    if(horizSpacing) {
-        sizeX=viewRatio/windRatio;
-        posX=(1.0f-sizeX)/2.0f;
+    if(horiz_spacing) {
+        size_x=view_ratio/wind_ratio;
+        pos_x=(1.0f-size_x)/2.0f;
     } else {
-        sizeY=windRatio/viewRatio;
-        posY=(1.0f-sizeY)/2.0f;
+        size_x=wind_ratio/view_ratio;
+        pos_y=(1.0f-size_y)/2.0f;
     }
-    view.setViewport(sf::FloatRect({{posX,posY},{sizeX,sizeY}}));
+    view.setViewport(sf::FloatRect({{pos_x,pos_y},{size_x,size_y}}));
 
     return view;
 }
+
+App::~App(){
+    
+    Function::PrintFunctionCount();
+    Trigonometric::PrintTrigonometricCount();
+    Logarithmic::PrintLogarithmicCount();
+    Algebraic::PrintAlgebraicCount();
+    Mixt::PrintMixtCount();
+
+    delete m_X,m_O,m_Y;
+    delete m_window;
+}
+
+

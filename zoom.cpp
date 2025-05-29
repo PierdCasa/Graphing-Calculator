@@ -2,22 +2,22 @@
 
 // Remove member initializer for ZoomPr, and initialize it in initFont instead
 
-Zoom::Zoom(std::string FontAddress):FontAddress(FontAddress){
-    ZoomPr=new Texts("100%",FontAddress);
-    ZoomPr->setPosition({0.0f,0.0f});
-    ZoomPr->setFillColor(sf::Color::White);
+Zoom::Zoom(std::string font_address):m_font_address(font_address){
+    m_zoom_pr=new Texts("100%",font_address);
+    m_zoom_pr->setPosition({0.0f,0.0f});
+    m_zoom_pr->setFillColor(sf::Color::White);
 }
 
 void Zoom::Draw(sf::RenderWindow* window){
-    window->draw(*ZoomPr);
+    window->draw(*m_zoom_pr);
 }
 
 Zoom::~Zoom(){
-    delete ZoomPr;
+    delete m_zoom_pr;
 }
-void Zoom::setZoom(float SCALE_X)
+void Zoom::SetZoom(float scale_x)
 {   
-    ZoomPr->streamText(std::to_string(int(SCALE_X))+"%");
+    m_zoom_pr->StreamText(std::to_string(int(scale_x))+"%");
     //o conversie misto
 }
 

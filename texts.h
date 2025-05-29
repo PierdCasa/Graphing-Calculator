@@ -4,16 +4,16 @@
 
 class Texts:public sf::Text {
     private:
-        std::string originalStr;
-        Fonts *fonts;
+        std::string m_original_str;
+        Fonts *m_fonts;
 
-        void initFont(std::string font_address);
-        void initString(std::string str);
+        void _InitFont(std::string font_address);
+        void _InitString(std::string str);
 
     public:
         Texts(std::string str,std::string font_address);
         ~Texts();
 
-        void streamText(std::string str="");
+        void StreamText(std::string str="");
 
 };
