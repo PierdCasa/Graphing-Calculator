@@ -2,7 +2,7 @@
 OOP Project- Pislariu Mario-Catalin 
 
 
-The project includes an Object-Oriented Programming(OOP) implementation of an application designed to plot mathematical function graphs. For simplicity, the functions are categorized as: Algebraic, Logarithmic, Trigonometric, and Mixed.
+The project includes an Object-Oriented Programming (OOP) implementation of an application designed to plot mathematical function graphs. For simplicity, the functions are categorized as: Algebraic, Logarithmic, Trigonometric, and Mixed.
 
 Conventions:
 
@@ -33,4 +33,4 @@ Press 'NumPad -' - zoom out
 
 Graph plotting is implemented using SFML 3.O, and input  is taken from keyboard(via SFML).
 
-Algebraic and mixed mathematical functions are stored using RPN(Reverse Polish Notation) and Shunting Yard Algorithm, transforming the input string(INFIX) into a vector od tokens(POSTFIX).
+Algebraic and mixed mathematical functions are stored using RPN (Reverse Polish Notation) and Shunting Yard Algorithm, transforming the input string (INFIX) into a vector od tokens (POSTFIX).
