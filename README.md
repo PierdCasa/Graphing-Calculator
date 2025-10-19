@@ -1,28 +1,28 @@
-# Calculator-de-functii
-Proiect OOP - Pislariu Mario-Catalin 
+# Graphing-Calculator
+OOP Project- Pislariu Mario-Catalin 
 
 
-Proiectul va contine o implementare utlilizand Programarea Orientata pe Obiecte a unui program ce are drep principal scop trasarea graficelor functiilor matematice.Pentru simplitate le voi cataloga in functii: Algebrice,Logaritmice,Trigonometrice si Mixte. 
+The project includes an Object-Oriented Programming(OOP) implementation of an application designed to plot mathematical function graphs. For simplicity, the functions are categorized as: Algebraic, Logarithmic, Trigonometric, and Mixed.
 
-Conventii:
+Conventions:
 
-Trigonometrice: SIN COS TG CTG ARCSIN ARCCOS ARCTG ARCCTG
+Trigonometric: SIN COS TG CTG ARCSIN ARCCOS ARCTG ARCCTG
 
---scrise cu litere mari, fara variabile X => vor desena graficele functiilor trig. elementare
+--written in uppercase letters, without variables (e.g X) -> plots the graphs of the corresponding basic trigonometric functions.
 
-Logaritmice: LN LG
+Logarithmic: LN LG
 
---scrise cu litere mari, fara variab X => vor desena graficele functiilor log. elementare( lg si ln)
+--written in uppercase letters, without variables (e.g X) -> plots the graphs of the corresponding basic logarithmic functions.
 
-Algebrice: (X^2+3X+1)
+Algebraic: (X^2+3X+1)
 
---scrise cu litere mari(i.e fiecare aparitie a variab. "X" este uppercase) => va desena graficul functiei algebrice
+--written in uppercase letters (i.e. every occurence of variable "X" is uppercase) -> plots the graphs of the corresponding algebraic functions.
 
-Mixte:
+Mixed:
 
---scrise cu litere mici(i.e fiecare aparitie a variab. "x" este lowercase) => va desena graficul functiei mixte
+--written in lowercase (i.e. every occurence of variable "X" is lowercase) -> plots the graphs of the corresponding mixed function. 
 
-Nerespectarea conventiilor va genera erori.
+Failure to follow these conventions will generate errors.( "ERROR" message in the corresponding input box + terminal message for following the convention )
 
 Comenzi:
 
@@ -31,7 +31,6 @@ Type 'enter' - draw function
 Press 'NumPad +' - zoom in
 Press 'NumPad -' - zoom out
 
-Implementarea trasarii graficelor va fi realizata folosind SFML 3.0.
-Inputul va fi luat de la tastatura(prin SFML).
+Graph plotting is implemented using SFML 3.O, and input  is taken from keyboard(via SFML).
 
-Memorarea functiilor matematice algebrice si mixte se va face utilizand RPN si Shunting-Yard Algorithm, tranformand stringul dat drep input( INFIX) intr-un vector de Token-uri(POSTFIX).
+Algebraic and mixed mathematical functions are stored using RPN(Reverse Polish Notation) and Shunting Yard Algorithm, transforming the input string(INFIX) into a vector od tokens(POSTFIX).
