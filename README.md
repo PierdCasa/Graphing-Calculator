@@ -24,7 +24,7 @@ Mixed:
 
 Failure to follow these conventions will generate errors.( "ERROR" message in the corresponding input box + terminal message for following the convention )
 
-Comenzi:
+Commands: 
 
 Type 'del' - delete all functions
 Type 'enter' - draw function
